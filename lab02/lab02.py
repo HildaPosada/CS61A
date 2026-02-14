@@ -13,8 +13,10 @@ def composite_identity(f, g):
     >>> b1(4)                            # (4 + 1) ** 2 != 4 ** 2 + 1
     False
     """
-    "*** YOUR CODE HERE ***"
-
+    #** YOUR CODE HERE **
+    #since we want to return a function that takes in one parameter x, we can use a lambda function to do this. The lambda function will take in x and return True if f(g(x)) is equal to g(f(x)), and False otherwise.
+    return lambda x: f(g(x)) == g(f(x))
+    
 
 def sum_digits(y):
     """Return the sum of the digits of non-negative integer y."""
@@ -60,7 +62,8 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
-
+    #since we want to return a function that takes in one parameter N, we can use a lambda function to do this. The lambda function will take in N and return the count of numbers from 1 to N that satisfy the condition.
+    return lambda N: sum(1 for i in range(1, N + 1) if condition(N, i))
 
 def multiple(a, b):
     """Return the smallest number n that is a multiple of both a and b. 
@@ -71,7 +74,12 @@ def multiple(a, b):
     42
     """
     "*** YOUR CODE HERE ***"
-
+    #since we want to return the smallest number n that is a multiple of both a and b, we can use a while loop to find the smallest number that is a multiple of both a and b. We can start with the larger of the two numbers and keep adding it to itself until we find a number that is a multiple of both a and b.
+    n = max(a, b)
+    while True:
+        if n % a == 0 and n % b == 0:
+            return n
+        n += max(a, b)
 
 
 def cycle(f1, f2, f3):
@@ -101,4 +109,18 @@ def cycle(f1, f2, f3):
     19
     """
     "*** YOUR CODE HERE ***"
+    #since we want to return a function that is itself a higher-order function, we can use a lambda function to do this. The lambda function will take in n and return a function that takes in x and applies the functions f1, f2, and f3 in the correct order based on the value of n.
+    def apply_functions(n):
+        def apply(x):
+            for i in range(1, n + 1):
+                if i % 3 == 1:
+                    x = f1(x)
+                elif i % 3 == 2:
+                    x = f2(x)
+                else:
+                    x = f3(x)
+            return x
+        return apply
+    return apply_functions  
+
 
