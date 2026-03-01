@@ -15,6 +15,7 @@ def print_if(s, f):
     """
     for x in s:
         "*** YOUR CODE HERE ***"
+    # Loop through each element of s and print it if f returns a true value
         if f(x):
             print(x)
     return None    
