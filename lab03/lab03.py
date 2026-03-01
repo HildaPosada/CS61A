@@ -38,6 +38,8 @@ def close(s: list[int], k: int) -> int:
     count = 0
     for i in range(len(s)):  # Use a range to loop over indices
         "*** YOUR CODE HERE ***"
+        if abs(s[i] - i) <= k:  # Check if the element at index i is within k of i
+            count += 1  # Increment count if it is
     return count
 
 
@@ -53,7 +55,7 @@ def close_list(s: list[int], k: int) -> list[int]:
     [2, 4, 3, 5]
     """
     assert k >= 0
-    return [___ for i in range(len(s)) if ___]
+    return [s[i] for i in range(len(s)) if abs(s[i] - i) <= k] # Use a list comprehension to create a list of elements that are within k of their index
 
 
 from math import sqrt
