@@ -71,7 +71,7 @@ def squares(s: list[int]) -> list[int]:
     >>> squares(seq)
     []
     """
-    return [___ for n in s if ___]
+    return [int(sqrt(n)) for n in s if int(sqrt(n)) ** 2 == n] # Use a list comprehension to create a list of square roots of perfect squares
 
 
 def double_eights(n: int) -> bool:
@@ -96,6 +96,12 @@ def double_eights(n: int) -> bool:
     True
     """
     "*** YOUR CODE HERE ***"
+    if n < 10:
+        return False
+    elif n % 100 == 88:
+        return True
+    else:
+        return double_eights(n//10) # Check if the last two digits are 88, if not, remove the last digit and check again
 
 
 def make_onion(f, g):
@@ -124,13 +130,13 @@ def make_onion(f, g):
     """
     def can_reach(x, y, limit):
         if limit < 0:
-            return ____
+            return False
         elif x == y:
-            return ____
+            return True
         else:
-            return can_reach(____, ____, limit - 1) or can_reach(____, ____, limit - 1)
+            return can_reach(f(x), y, limit - 1) or can_reach(g(x), y, limit - 1)
     return can_reach
-
+# The can_reach function checks if x is equal to y, if it is, it returns True. If the limit is less than 0, it returns False. Otherwise, it recursively calls itself with f(x) and g(x) and decrements the limit by 1. If either of those calls returns True, then can_reach returns True. If both calls return False, then can_reach returns False.
 
 def ten_pairs(n):
     """Return the number of ten-pairs within positive integer n.
