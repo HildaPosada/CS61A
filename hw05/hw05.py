@@ -29,7 +29,7 @@ def hailstone(n):
     elif n % 2 == 0:
       yield from hailstone(n // 2)
     else:
-      yield from hailstone(3 * n + 1)#
+      yield from hailstone(3 * n + 1)#start wiht n thell yield 3n + 1 if n is odd and n // 2 if n is even until it reaches 1 then yield 1 infinitely
 
 
 def merge(a, b):
@@ -58,7 +58,7 @@ def merge(a, b):
         a_val = next(a)
       else:
         yield b_val
-        b_val = next(b)
+        b_val = next(b) #peak at the front of a and b and yield the smaller one then move that generator forward if they are equal yield one of them and move both generators forward
 
 
 def stair_ways(n):
@@ -81,7 +81,7 @@ def stair_ways(n):
       for way in stair_ways(n - 1):
         yield [1] + way
       for way in stair_ways(n - 2):
-        yield [2] + way
+        yield [2] + way # climb n staris by taking a step of 1 and then climbing n - 1 stairs or taking a step of 2 and then climbing n - 2 stairs
 
 
 def yield_paths(t, value):
@@ -124,7 +124,7 @@ def yield_paths(t, value):
       yield [label(t)]
     for b in branches(t):
       for path in yield_paths(b, value):
-        yield [label(t)] + path
+        yield [label(t)] + path #check every child of t for the value if it is found yield a list with just the label of that child if it is not found keep looking and if it is found in a deeper child yield a list with the label of t followed by the path to the value in that child
 
 
 
