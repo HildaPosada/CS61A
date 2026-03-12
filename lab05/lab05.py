@@ -33,7 +33,7 @@ def insert_items(s: list[int], before: int, after: int) -> list[int]:
         s.insert(i + 1, after)
         i += 1
       i += 1
-    return s
+    return s #walk through the list and when you find before insert after right after it then skip over the after you just inserted and keep going until you reach the end of the list
 
 
 def group_by(s: list[int], fn) -> dict[int, list[int]]:
@@ -54,7 +54,7 @@ def group_by(s: list[int], fn) -> dict[int, list[int]]:
             grouped[key].append(e)
         else:
             grouped[key] = [e]
-    return grouped
+    return grouped #apply the function to each element in the list and group them into a dictionary where the keys are the result of the function and the values are lists of elements that result in that key when the function is applied to them
 
 
 from typing import Iterator  # "t: Iterator[int]" means t is an iterator that yields integers
@@ -85,8 +85,7 @@ def count_occurrences(t: Iterator[int], n: int, x: int) -> int:
     for _ in range(n):
       if next(t) == x:
         count += 1
-    return count
-
+    return count #look at the first n elements of the iterator and count how many times x appears among those n elements then return that count
 
 from typing import Iterator  # "t: Iterator[int]" means t is an iterator that yields integers
 
@@ -121,7 +120,7 @@ def repeated(t: Iterator[int], k: int) -> int:
         prev = curr
         streak = 1
       if streak == k:
-        return curr
+        return curr #keep track of the current streak of repeated values and return the value when the streak reaches k
 
 
 def sprout_leaves(t, leaves):
@@ -160,7 +159,7 @@ def sprout_leaves(t, leaves):
     # *** YOUR CODE HERE ***
     if is_leaf(t):
       return tree(label(t), [tree(leaf) for leaf in leaves])
-    return tree(label(t), [sprout_leaves(b, leaves) for b in branches(t)])
+    return tree(label(t), [sprout_leaves(b, leaves) for b in branches(t)]) #when you reach a leaf sprout new leaves with the given labels and if you are not at a leaf keep sprouting down the tree until you reach the leaves then return the new tree
 
 
 def prune_leaves(t, vals):
@@ -197,7 +196,7 @@ def prune_leaves(t, vals):
       pruned = prune_leaves(b, vals)
       if pruned is not None:
         kept.append(pruned)
-    return tree(label(t), kept)
+    return tree(label(t), kept) #keep track of the branches that are not pruned and return a new tree with those branches
 
 
 def pathsum(t, n):
@@ -212,7 +211,7 @@ def pathsum(t, n):
     if is_leaf(t):
       return label(t) == n
     remaining = n - label(t)
-    return any(pathsum(b, remaining) for b in branches(t))
+    return any(pathsum(b, remaining) for b in branches(t)) #when you reach a leaf check if the sum of the path to that leaf equals n and if you are not at a leaf keep checking down the tree with the remaining sum until you reach a leaf
 
 
 def sum_tree(t):
@@ -223,7 +222,7 @@ def sum_tree(t):
     15
     """
     # *** YOUR CODE HERE ***
-    return label(t) + sum(sum_tree(b) for b in branches(t))
+    return label(t) + sum(sum_tree(b) for b in branches(t)) #return the label of the current tree plus the sum of all the branches
 
 def balanced(t):
     """Checks if each branch has same sum of all elements and
@@ -243,7 +242,7 @@ def balanced(t):
     if is_leaf(t):
       return True
     sums = [sum_tree(b) for b in branches(t)]
-    return all(s == sums[0] for s in sums) and all(balanced(b) for b in branches(t))
+    return all(s == sums[0] for s in sums) and all(balanced(b) for b in branches(t)) #check if the tree is a leaf if it is then it is balanced otherwise check if all the branches have the same sum and if all the branches are balanced
 
 
 def partial_reverse(s: list[int], start: int) -> None:
@@ -262,7 +261,7 @@ def partial_reverse(s: list[int], start: int) -> None:
     i, j = start, len(s) - 1
     while i < j:
       s[i], s[j] = s[j], s[i]
-      i, j = i + 1, j - 1
+      i, j = i + 1, j - 1 #use two pointers to swap the elements in the list starting from start and the end of the list until they meet in the middle
 
 
 
