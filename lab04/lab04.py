@@ -7,7 +7,7 @@ def divide(quotients: list[int], divisors: list[int]) -> dict[int, list[int]]:
     >>> divide(range(1, 5), range(20, 25))
     {1: [20, 21, 22, 23, 24], 2: [20, 22, 24], 3: [21, 24], 4: [20, 24]}
     """
-    return {q: [d for d in divisors if d % q == 0] for q in quotients} # A dictionary comprehension is a concise way to create dictionaries. It consists of an expression followed by a for clause, and optionally, one or more if clauses. In this case, we are creating a dictionary where each key is a quotient q from the quotients list, and the corresponding value is a list of divisors from the divisors list that are divisible by q (i.e., d % q == 0). The list of divisors is generated using a list comprehension inside the dictionary comprehension.
+    return {q: [d for d in divisors if d % q == 0] for q in quotients}
 
 
 
@@ -31,9 +31,9 @@ def buy(fruits_to_buy: list[str], prices: dict[str, int], total_amount: int) -> 
         elif fruits and amount > 0:
             fruit = fruits[0]
             price = prices[fruit]
-            for k in range(amount // price + 1):
+            for k in range(1, amount // price + 1):
                 # Hint: The display function will help you add fruit to the cart.
-                add(fruits[1:], amount - k * price, cart + display(fruit, k) if k > 0 else cart)
+                add(fruits[1:], amount - k * price, cart + display(fruit, k))
     add(fruits_to_buy, total_amount, '')
 
 
@@ -56,7 +56,6 @@ def display(fruit: str, count: int) -> str:
 
 
 from math import sqrt
-from xml.etree.ElementTree import _Target
 def distance(city_a, city_b):
     """
     Returns the distance between city_a and city_b according to their
@@ -71,9 +70,7 @@ def distance(city_a, city_b):
     >>> distance(city_c, city_d)
     5.0
     """
-    "*** YOUR CODE HERE ***"
-    def distance (city_a, city_b):
-        return sqrt((get_lat(city_a) - get_lat(city_b)) ** 2 + (get_lon(city_a) - get_lon(city_b)) ** 2) # The distance between two points in a 2D plane can be calculated using the Pythagorean theorem, which states that the distance is the square root of the sum of the squares of the differences in the x and y coordinates. In this case, we are treating the latitude and longitude as the x and y coordinates, respectively. Therefore, we calculate the difference in latitudes (get_lat(city_a) - get_lat(city_b)) and the difference in longitudes (get_lon(city_a) - get_lon(city_b)), square both differences, sum them, and then take the square root to get the distance between city_a and city_b.
+    return sqrt((get_lat(city_a) - get_lat(city_b)) ** 2 + (get_lon(city_a) - get_lon(city_b)) ** 2)
 
 def closer_city(lat, lon, city_a, city_b):
     """
@@ -90,13 +87,10 @@ def closer_city(lat, lon, city_a, city_b):
     >>> closer_city(41.29, 174.78, bucharest, vienna)
     'Bucharest'
     """
-    "*** YOUR CODE HERE ***"
-    def closer_city(lat, lon, city_a, city_b):
-        target = make_city('target', lat, lon) # We create a target city with the given latitude and longitude to compare distances.
-        if distance(target, city_a) < distance(target, city_b):
-            return get_name(city_a) # If city_a is closer to the target, we return its name.
-        else:
-            return get_name(city_b) # If city_b is closer to the target (or if they are the same distance), we return its name.
+    target = make_city('target', lat, lon)
+    if distance(target, city_a) < distance(target, city_b):
+        return get_name(city_a)
+    return get_name(city_b)
 
 def check_city_abstraction():
     """

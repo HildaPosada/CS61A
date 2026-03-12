@@ -12,11 +12,8 @@ def shuffle(s):
     ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     """
     assert len(s) % 2 == 0, 'len(seq) must be even'
-    "*** YOUR CODE HERE ***"
-    def shuffel (s):
-        assert len(s) % 2 == 0, 'len(seq) must be even'
-        half = len(s) // 2
-        return [x for i in range(half) for x in (s[i], s[i + half])]   # We use a list comprehension to create a new list that interleaves the two halves of the input list s. The outer loop iterates over the indices of the first half of the list, and for each index i, we add the element at index i and the element at index i + half to the new list.
+    half = len(s) // 2
+    return [x for i in range(half) for x in (s[i], s[i + half])]
 
 
 def deep_map(f, s):
@@ -41,13 +38,11 @@ def deep_map(f, s):
     >>> s3 is s2[1]
     True
     """
-    "*** YOUR CODE HERE ***"
-    def deep_map(f, s):
-        for i in range(len(s)):
-            if type(s[i]) == list:
-                deep_map(f, s[i]) # If the element is a list, we recursively call deep_map on that sublist.
-            else:
-                s[i] = f(s[i]) # If the element is not a list, we apply the function f to it and update the element in place.
+    for i in range(len(s)):
+        if type(s[i]) == list:
+            deep_map(f, s[i])
+        else:
+            s[i] = f(s[i])
 
 
 SOURCE_FILE = __file__
@@ -56,12 +51,12 @@ SOURCE_FILE = __file__
 def planet(mass):
     """Construct a planet of some mass."""
     assert mass > 0
-    return ['planet', mass] # We represent a planet as a list with the first element being the string 'planet' and the second element being the mass of the planet. This allows us to easily identify planets and access their mass when needed.
+    return ['planet', mass]
 
 def mass(p):
     """Select the mass of a planet."""
     assert is_planet(p), 'must call mass on a planet'
-    return p[1] # We access the mass of the planet by returning the second element of the list that represents the planet. We also include an assertion to ensure that the input is indeed a planet before trying to access its mass.
+    return p[1]
 
 def is_planet(p):
     """Whether p is a planet."""
@@ -113,18 +108,15 @@ def balanced(m):
     >>> check(SOURCE_FILE, 'balanced', ['Index'])
     True
     """
-    "*** YOUR CODE HERE ***"
-    def balanced(m):
-        if is_planet(m):
-            return True
-        else:
-            left_arm = left(m)
-            right_arm = right(m)
-            left_end = end(left_arm)
-            right_end = end(right_arm)
-            left_torque = length(left_arm) * total_mass(left_end)
-            right_torque = length(right_arm) * total_mass(right_end)
-            return left_torque == right_torque and balanced(left_end) and balanced(right_end) # A mobile is balanced if the torque on the left arm is equal to the torque on the right arm, and if the mobiles hanging at the end of each arm are also balanced.
+    if is_planet(m):
+        return True
+    left_arm = left(m)
+    right_arm = right(m)
+    left_end = end(left_arm)
+    right_end = end(right_arm)
+    left_torque = length(left_arm) * total_mass(left_end)
+    right_torque = length(right_arm) * total_mass(right_end)
+    return left_torque == right_torque and balanced(left_end) and balanced(right_end)
 
 
 def berry_finder(t):
@@ -149,7 +141,7 @@ def berry_finder(t):
     for b in branches(t):
         if berry_finder(b):
             return True
-    return False # A tree does not contain a 'berry' if none of its branches contain a 'berry'.
+    return False
 
 SOURCE_FILE = __file__
 
@@ -163,11 +155,10 @@ def max_path_sum(t):
     >>> max_path_sum(t2) # 5, 2, 10
     17
     """
-    "*** YOUR CODE HERE ***"
     if is_leaf(t):
         return label(t)
     else:
-        return label(t) + max([max_path_sum(b) for b in branches(t)]) # If the tree is a leaf, we return its label. Otherwise, we return the label of the current node plus the maximum path sum of its branches. We use a list comprehension to compute the maximum path sum for each branch and then take the maximum of those values.
+        return label(t) + max([max_path_sum(b) for b in branches(t)])
 
 
 def mobile(left, right):
