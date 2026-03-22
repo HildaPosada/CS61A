@@ -9,7 +9,7 @@ class Transaction:
 
     def changed(self) -> bool:
         """Return whether the transaction resulted in a changed balance."""
-        "*** YOUR CODE HERE ***"
+        return self.before != self.after
 
     def report(self) -> str:
         """Return a string describing the transaction.
@@ -23,7 +23,10 @@ class Transaction:
         """
         msg: str = 'no change'
         if self.changed():
-            "*** YOUR CODE HERE ***"
+            if self.after > self.before:
+                msg = 'increased ' + str(self.before) + '->' + str(self.after)
+            else:
+                msg = 'decreased ' + str(self.before) + '->' + str(self.after)
         return str(self.id) + ': ' + msg
 
 class BankAccount:
@@ -70,23 +73,29 @@ class BankAccount:
     def __init__(self, account_holder: str):
         self.balance: int = 0
         self.holder = account_holder
+        self.transactions: list[Transaction] = []
 
     def deposit(self, amount: int) -> int:
         """Increase the account balance by amount, add the deposit
         to the transaction history, and return the new balance.
         """
+        before = self.balance
         self.balance = self.balance + amount
+        self.transactions.append(Transaction(len(self.transactions), before, self.balance))
         return self.balance
 
     def withdraw(self, amount: int) -> int | str:
         """Decrease the account balance by amount, add the withdraw
         to the transaction history, and return the new balance.
         """
+        before = self.balance
         if amount > self.balance:
+            self.transactions.append(Transaction(len(self.transactions), before, self.balance))
             return 'Insufficient funds'
         self.balance = self.balance - amount
+        self.transactions.append(Transaction(len(self.transactions), before, self.balance))
         return self.balance
-
+    #briefly considered using a helper function to avoid repeating the code for creating a Transaction and appending it to the transactions list, but we decided that it would not be worth the extra complexity of having a helper function that takes in the transaction type (deposit or withdraw) and the amount, so we just repeated the code in both deposit and withdraw.
 
 class Email:
     """An email has the following instance attributes:
@@ -98,7 +107,6 @@ class Email:
     def __init__(self, msg: str, sender, recipient_name: str):
         self.msg = msg
         self.sender = sender
-        self.recipient_name = recipient_name
 
 class Server:
     """Each Server has one instance attribute called clients that is a
@@ -141,14 +149,14 @@ class Server:
         """Append the email to the inbox of the client it is addressed to.
             email is an instance of the Email class.
         """
-        ____.inbox.append(email)
+        self.clients[email.recipient_name].inbox.append(email)
 
     def register_client(self, client):
         """Add a client to the clients mapping (which is a 
         dictionary from client names to client instances).
             client is an instance of the Client class.
         """
-        ____[____] = ____
+        self.clients[client.name] = client
 
 class Client:
     """A client has a server, a name (str), and an inbox (list).
@@ -171,13 +179,13 @@ class Client:
         self.inbox: list = []
         self.server = server
         self.name = name
-        server.register_client(____)
+        server.register_client(self)
 
     def compose(self, message: str, recipient_name: str):
         """Send an email with the given message to the recipient."""
-        email = Email(message, ____, ____)
+        email = Email(message, self, recipient_name)
         self.server.send(email)
-
+#the Client class create an Email and then call a method on the Server to send the email, but we decided that it would be simpler to just have the Client class call the Server's send method directly with the new Email as an argument.
 
 class Mint:
     """A mint creates coins by stamping on years.
@@ -214,10 +222,10 @@ class Mint:
         self.update()
 
     def create(self, coin):
-        "*** YOUR CODE HERE ***"
+        return coin(self.year)
 
     def update(self) -> None:
-        "*** YOUR CODE HERE ***"
+        self.year = Mint.present_year
 
 class Coin:
     cents = None # will be provided by subclasses, but not by Coin itself
@@ -226,7 +234,7 @@ class Coin:
         self.year = year
 
     def worth(self) -> int:
-        "*** YOUR CODE HERE ***"
+        return self.cents + max(0, Mint.present_year - self.year - 50)
 
 class Nickel(Coin):
     cents = 5
@@ -266,3 +274,4 @@ class VirFib():
     def __repr__(self) -> str:
         return "VirFib object, value " + str(self.value)
 
+#a helper function to compute the next Fibonacci number, but we decided that it would be simpler to just compute the next Fibonacci number directly in the next method without using a helper function, since the logic for computing the next Fibonacci number is not very complex and does not need to be reused elsewhere in the class.
