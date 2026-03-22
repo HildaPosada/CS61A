@@ -83,6 +83,10 @@ class VendingMachine:
     def __init__(self, product: str, price: int):
         """Set the product and its price, as well as other instance attributes."""
         "*** YOUR CODE HERE ***"
+        self.product = product
+        self.price = price
+        self.stock = 0
+        self.balance = 0 # the amount of money currently in the vending machine
 
     def restock(self, n: int) -> str:
         """Add n to the stock and return a message about the updated stock level.
@@ -90,6 +94,9 @@ class VendingMachine:
         E.g., Current candy stock: 3
         """
         "*** YOUR CODE HERE ***"
+        self.stock += n
+        return f"Current {self.product} stock: {self.stock}" # the f-string is a convenient way to format the string with the product and stock values.
+
 
     def add_funds(self, n: int) -> str:
         """If the machine is out of stock, return a message informing the user to restock
@@ -102,6 +109,11 @@ class VendingMachine:
         E.g., Current balance: $4
         """
         "*** YOUR CODE HERE ***"
+        if self.stock == 0:
+            return f"Nothing left to vend. Please restock. Here is your ${n}."
+        else:
+            self.balance += n
+            return f"Current balance: ${self.balance}"# the f-string is a convenient way to format the string with the balance value.
 
     def vend(self) -> str:
         """Dispense the product if there is sufficient stock and funds and
@@ -115,6 +127,18 @@ class VendingMachine:
               Please add $3 more funds.
         """
         "*** YOUR CODE HERE ***"
+        if self.stock == 0:
+            return "Nothing left to vend. Please restock."
+        elif self.balance < self.price:
+            return f"Please add ${self.price - self.balance} more funds."
+        else:
+            self.stock -= 1
+            change = self.balance - self.price
+            self.balance = 0
+            if change > 0:
+                return f"Here is your {self.product} and ${change} change."
+            else:
+                return f"Here is your {self.product}."# the f-string is a convenient way to format the string with the product and change values.
 
 
 def store_digits(n: int):
@@ -137,6 +161,13 @@ def store_digits(n: int):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
+    n = str(n)
+    head = Link(int(n[0]))
+    current = head
+    for digit in n[1:]:
+        current.rest = Link(int(digit))
+        current = current.rest
+    return head # the function converts the number n to a string, then iterates through each digit in the string and creates a new Link for each digit, linking them together to form the final linked list. The first digit is used to create the head of the linked list, and subsequent digits are added as rest of the current link until all digits have been processed.
 
 
 def deep_map_mut(func, s: Link) -> None:
@@ -167,6 +198,13 @@ def deep_map_mut(func, s: Link) -> None:
     (2 ((4 6)) 8)
     """
     "*** YOUR CODE HERE ***"
+    if s is Link.empty:
+        return
+    elif isinstance(s.first, Link):
+        deep_map_mut(func, s.first)
+    else:
+        s.first = func(s.first)
+    deep_map_mut(func, s.rest) # the function checks if the first element of the linked list is itself a linked list, in which case it recursively calls deep_map_mut on that sub
 
 
 def prune_small(t, n):
@@ -213,13 +251,13 @@ def delete(t, x):
     Tree(1, [Tree(4), Tree(5), Tree(3, [Tree(6)]), Tree(6), Tree(7), Tree(8), Tree(4)])
     """
     new_branches = []
-    for _________ in ________________:
-        _______________________
+    for b in t.branches:
+        delete(b, x)
         if b.label == x:
-            __________________________________
+            new_branches.extend(b.branches)
         else:
-            __________________________________
-    t.branches = ___________________
+            new_branches.append(b)
+    t.branches = new_branches # the function iterates through each branch of the tree, recursively calling delete on each branch to remove any nodes labeled x. If a branch is labeled x, its children are added to the new_branches list, effectively removing the branch and promoting its children to be direct children of the current node. If a branch is not labeled x, it is simply added to the new_branches list. Finally, the branches of the current node are updated to be the new_branches list, which contains all the remaining branches after deletion.
 
 
 def two_list(vals, counts):
@@ -241,6 +279,13 @@ def two_list(vals, counts):
     Link(1, Link(1, Link(3, Link(3, Link(2)))))
     """
     "*** YOUR CODE HERE ***"
+    head = Link(vals[0])
+    current = head
+    for val, count in zip(vals, counts):
+        for _ in range(count):
+            current.rest = Link(val)
+            current = current.rest
+    return head.rest # the function creates a linked list by iterating through the vals and counts lists simultaneously using the zip function. For each value and its corresponding count, it creates a new Link
 
 
 class Tree:
